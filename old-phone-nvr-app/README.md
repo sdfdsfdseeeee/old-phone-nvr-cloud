@@ -1,24 +1,30 @@
 # Old Phone NVR Cloud (Android)
 
-MVP app to turn an old Android phone into:
-- foreground NVR service
-- segmented local recording (TODO hook in CameraX recorder)
-- background upload worker (TODO Drive API upload)
+APK Android biến điện thoại cũ thành camera NVR mini + upload Google Drive.
 
-## Build
-1. Open project in Android Studio (Hedgehog+)
-2. Let Gradle sync
-3. Run on Android 8.0+ device
-4. Click **Start NVR**
+## Tính năng đã có
+- Foreground service chạy nền (`NvrService`)
+- CameraX quay backend camera thành file segment `mp4` (mỗi 60 giây)
+- Google Sign-In để lấy tài khoản Drive
+- Worker upload tự động lên Google Drive (chu kỳ 15 phút)
+- Xóa file local sau khi upload thành công
 
-## Next tasks to finish APK production
-- Implement CameraX recording in `NvrService`
-- Implement Google Drive OAuth + upload in `UploadWorker`
-- Add boot receiver auto-start
-- Add motion detection + event-first upload queue
+## Build APK
+1. Mở thư mục `old-phone-nvr-app` bằng Android Studio
+2. Chờ Gradle sync xong
+3. Run trên máy Android hoặc Build APK:
+   - `Build > Build Bundle(s) / APK(s) > Build APK(s)`
 
-## Suggested Drive upload endpoint
-`POST https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`
+## Cách dùng nhanh
+1. Mở app, bấm **Connect Google Drive**
+2. Bấm **Start NVR**
+3. Đặt máy cắm sạc + Wi-Fi ổn định
+4. App tự quay segment và tự upload cloud theo lịch
 
-Use OAuth scope:
-`https://www.googleapis.com/auth/drive.file`
+## Lưu ý quan trọng
+- Android phải cho phép Camera, Micro, Notification
+- Nên tắt Battery Optimization cho app
+- Nếu Drive chưa upload: kiểm tra đã sign-in thành công chưa
+
+## Đường dẫn file local
+`Android/data/com.longpc.nvrcloud/files/Movies/segments/`
